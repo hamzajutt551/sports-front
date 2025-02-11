@@ -2,11 +2,11 @@ import React from "react";
 
 const MatchCard = ({ match }) => {
   return (
-    <div className="col-md-6 mb-4">
-      <div className="card text-black  shadow-sm">
-        <div className="card-header  d-flex justify-content-between align-items-center p-3">
+    <div className="col-lg-4 col-md-6 w-50 col-sm-12 mb-3" data-status={match.status}>
+      <div className="card bg-white text-black p-1 px-2 text-center shadow-sm">
+        <div className="d-flex justify-content-between align-items-center mb-2">
           <div className="d-flex align-items-center">
-            <i className="fas fa-baseball fa-1x text-warning me-2"></i>
+            <i className="fas fa-baseball-bat-ball fa-1x text-warning me-2"></i>
             <p className="mb-0 fw-bold">{match.sport}</p>
           </div>
           <div>
@@ -16,51 +16,41 @@ const MatchCard = ({ match }) => {
           </div>
         </div>
 
-        <div className="card-body p-3">
-          <div className="row align-items-center">
-            <div className="col-md-3 text-center">
-              <img
-                src={match.imageUrl}
-                alt="League Logo"
-                className="img-fluid rounded-circle"
-                style={{ maxHeight: "80px" }}
-              />
-            </div>
-
-            <div className="col-md-5">
-              <h5 className="mb-2 fw-bold">{match.teams}</h5>
-              <span className="badge bg-warning text-dark fs-6">{match.league}</span>
-            </div>
-
-            <div className="col-md-4">
-              <div className="d-flex flex-column">
-                <p className="mb-2">
-                  <span className="fw-bold">Bid:</span> ${match.bidAmount}
-                </p>
-                <p className="mb-0">
-                  <span className="fw-bold">Security:</span>{" "}
-                  {match.securityVenue ? (
-                    <span className="text-success">Yes</span>
-                  ) : (
-                    <span className="text-danger">No</span>
-                  )}
-                </p>
-              </div>
-            </div>
+        <div className="row align-items-center">
+          <div className="col">
+            <img
+              src={match.imageUrl}
+              alt="League Logo"
+              className="img-fluid"
+              style={{ maxWidth: "80px", height: "auto" }}
+            />
+          </div>
+          <div className="col">
+            <h6 className="mb-1">{match.teams}</h6>
+            <span className={`badge text-white ${match.status === "available" ? "bg-success" : "bg-danger"}`}>
+              {match.status === "available" ? "Match Available" : "Match Booked"}
+            </span>
+          </div>
+          <div className="col">
+            <p className="mb-0 text-danger fw-bold">
+              Bid <br />
+              <span className="text-black">${match.bidAmount}</span>
+            </p>
+          </div>
+          <div className="col">
+            <p className="mb-0 fw-bold">
+              Security: <span className="text-success">{match.security ? "Yes" : "No"}</span>
+            </p>
           </div>
         </div>
 
-        <div className="card-footer bg-light p-3">
-          <div className="d-flex justify-content-between align-items-center">
-            <div>
-              <span className="text-muted small">Match Status:</span>
-              <span className="ms-2 fw-bold">{match.status.toUpperCase()}</span>
-            </div>
-            <button className="btn btn-primary btn-sm">
-              <i className="fas fa-ticket-alt me-2"></i>Book Now
+        {match.status === "available" && (
+          <div className="card-footer bg-light mt-2">
+            <button className="btn btn-warning request-button" onClick={() => alert("Request Sent!")}> 
+              Send Request
             </button>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -70,6 +60,7 @@ const MatchCard = ({ match }) => {
 const MatchList = () => {
   const matches = [
     {
+      id: 1,
       sport: "Cricket",
       startDate: "07 Jun 2025",
       startTime: "05:00 PM",
@@ -78,20 +69,22 @@ const MatchList = () => {
       league: "PSL",
       bidAmount: 5000,
       security: true,
-      status: "available", // Change to "booked" or "pending" for different states
+      status: "available",
     },
     {
+      id: 2,
       sport: "Cricket",
       startDate: "10 Jun 2025",
       startTime: "07:00 PM",
       imageUrl: "./images/pakistan-super-league-psl-logo.png",
-      teams: "MI vs CSK",
-      league: "IPL",
-      bidAmount: 7000,
-      security: false,
+      teams: "Pak vs Ind",
+      league: "PSL",
+      bidAmount: 5000,
+      security: true,
       status: "booked",
     },
     {
+      id: 3,
       sport: "Cricket",
       startDate: "15 Jun 2025",
       startTime: "06:30 PM",
@@ -99,15 +92,15 @@ const MatchList = () => {
       teams: "RCB vs DC",
       league: "IPL",
       bidAmount: 6000,
-      security: true,
+      security: false,
       status: "pending",
     },
   ];
 
   return (
     <div className="row p-3">
-      {matches.map((match, index) => (
-        <MatchCard key={index} match={match} />
+      {matches.map((match) => (
+        <MatchCard key={match.id} match={match} />
       ))}
     </div>
   );
