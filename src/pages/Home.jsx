@@ -8,7 +8,7 @@ const Home = () => {
     
   return (
     <>
-    <div className="container-fluid">
+    <div className="container-fluid ">
       <div className="row">
      <div className="container home-page">
     <div className="row">
@@ -19,9 +19,9 @@ const Home = () => {
       </div>
     </div>
     <div className="col-md-3">
-    <aside id="sidebar" className="left-bar container mt-4">
-            <div className="feature-matchs">
-              <table className="table match-table">
+    <aside id="sidebar" className="left-bar container mt-4 ">
+            <div className="feature-matchs ">
+              <table className="table match-table " >
                 <thead>
                   <tr>
                     <th>Team 1</th>
@@ -34,8 +34,8 @@ const Home = () => {
                     <tr key={index}>
                       <td>
                         <img
-                          src={`images/img-0${index}_002.png`}
-                          alt="Portugal"
+                          src={`https://thecricketcauldron.com/wp-content/uploads/2018/02/germany-cricket.jpg`}
+                          alt=" Germany"
                           className="team-icon"
                         />
                         <div>Portugal</div>
@@ -43,8 +43,8 @@ const Home = () => {
                       <td className="vs-cell">VS</td>
                       <td>
                         <img
-                          src={`images/img-0${index + 1}.png`}
-                          alt="Germany"
+                          src={`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxDaYimUSiC0acoUU7IDnw1LCQ0BS0oO0w5A&s`}
+                          alt="Portugal"
                           className="team-icon"
                         />
                         <div>Germany</div>

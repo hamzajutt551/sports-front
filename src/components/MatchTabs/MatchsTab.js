@@ -33,7 +33,7 @@ export default function ModernTabs({ page }) {
     </select>
 
     {/* 🔹 New Bets Button (Takes Fixed Width) */}
-    <button className="text-white bg-warning p-2 rounded-md min-w-[140px]">
+    <button className="text-dark bg-warning p-2 rounded-md min-w-[140px]">
       New Bets
     </button>
   </div>
