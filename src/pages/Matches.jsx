@@ -26,10 +26,7 @@ const AllMatches = () => {
           <div className="col-12">
             {/* Simplified Header */}
             <header className="header d-flex justify-content-center align-items-center p-4">
-              {/* Create New Match Button */}
-              <button className="btn min-w-[140px] mx-2" data-bs-toggle="modal" data-bs-target="#createMatchModal">
-                Matches
-              </button>
+             
             </header>
             
 

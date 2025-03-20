@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ProfileUpdateModal from "../Edit_profile";
 import logo from '../../assets/images/logo512.png';
 import { Link } from "react-router-dom"; // ✅ Add this line
-
+import CreateMatchModal from "../models/createNewMatch";
 const API_URL = "https://matc.matchdada.com/public/api"; // Correct API URL
 
 const Navbar=()=> {
@@ -54,32 +54,39 @@ const Navbar=()=> {
           <a className="navbar-brand logo " href="/"><img src={logo} alt="logo"/></a>
 
           <div className="mx-auto header-menu">
-          <div className="d-flex justify-content-center gap-5 m-auto text-white icon-container">
-  {/* Home */}
-  <Link to="/" className="text-center text-decoration-none text-white icon-link">
-    <i className="fa fa-home fs-1 "></i>
-  </Link>
+    <div className="d-flex justify-content-center gap-5 m-auto text-white icon-container">
+        {/* Home */}
+        <Link to="/" className="text-center text-decoration-none text-white icon-link">
+            <i className="fa fa-home fs-1 "></i>
+        </Link>
 
-  {/* Contact */}
-  <Link to="/contact-us" className="text-center text-decoration-none text-white icon-link">
-    <i className="fa fa-phone fs-1 "></i>
-  </Link>
+        {/* Contact */}
+        <Link to="/contact-us" className="text-center text-decoration-none text-white icon-link">
+            <i className="fa fa-phone fs-1 "></i>
+        </Link>
 
-  <Link to="/notifications" className="text-center text-decoration-none text-white icon-link position-relative">
-  <i className="fa fa-bell fs-1 "></i>
-  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-    3 {/* Replace with dynamic count */}
-    <span className="visually-hidden">unread notifications</span>
-  </span>
-</Link>
+        {/* Notifications */}
+        <Link to="/notifications" className="text-center text-decoration-none text-white icon-link position-relative">
+            <i className="fa fa-bell fs-1 "></i>
+            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                3 {/* Replace with dynamic count */}
+                <span className="visually-hidden">unread notifications</span>
+            </span>
+        </Link>
 
+        {/* All Teams */}
+        <Link to="/all-teams" className="text-center text-decoration-none text-white icon-link">
+            <i className="fa fa-users fs-1 "></i>
+        </Link>
 
-  {/* All Teams */}
-  <Link to="/all-teams" className="text-center text-decoration-none text-white icon-link">
-    <i className="fa fa-users fs-1 "></i>
-  </Link>
+        {/* Matches Icon Button */}
+        <button className="text-center text-decoration-none text-white icon-link border-0 bg-transparent"
+            data-bs-toggle="modal" data-bs-target="#createMatchModal">
+            <i className="fa fa-futbol fs-1 "></i> {/* Match Icon */}
+        </button>
+    </div>
 </div>
-          </div>
+<CreateMatchModal />
 
           <div className="ms-auto">
             {user ? (

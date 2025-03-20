@@ -103,7 +103,7 @@ const FilterButtonWithModal = () => {
                     bottom: '20px',
                     right: '20px',
                     cursor: 'pointer',
-                    backgroundColor: '#0d6efd',
+                    backgroundColor: '#28a745',
                     color: 'white',
                     borderRadius: '50%',
                     width: '60px',

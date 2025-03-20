@@ -3,6 +3,8 @@ import axios from "axios";
 import Navbar from "../Header/header";
 import "./teamManagement.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 
 const AllTeams = () => {
@@ -10,6 +12,9 @@ const AllTeams = () => {
     const [selectedTeam, setSelectedTeam] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
     const [teamForm, setTeamForm] = useState({ name: "", address: "", city: "", pin: "", logo: null });
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false); // Loader state
+    
     const API_URL = "https://matc.matchdada.com/public/api"; // Correct API URL
     // Fetch teams from the API
     const fetchTeams = async () => {
@@ -27,10 +32,8 @@ const AllTeams = () => {
                 },
             });
     
-            // Log the response for debugging
             console.log("API Response:", response.data);
     
-            // Check if the response contains a `teams` key or is the array directly
             const teamsData = Array.isArray(response.data) ? response.data : response.data.teams || [];
             setTeams(teamsData);
         } catch (error) {
@@ -43,9 +46,16 @@ const AllTeams = () => {
                 console.error("Error setting up the request:", error.message);
             }
             setTeams([]);
+        } finally {
+            setLoading(false); // API کال کے بعد لوڈر آف کریں
         }
     };
-
+    
+    // useEffect کے ذریعے جب یہ Component لوڈ ہو تو fetchTeams چلے
+    useEffect(() => {
+        fetchTeams();
+    }, []);
+    
     useEffect(() => {
         fetchTeams();
     }, []);
@@ -165,67 +175,65 @@ const closeModal = () => {
 };
 
     return (
+        
         <div className="container-xl">
             <Navbar />
             <div className="table-responsive">
-                <div className="table-wrapper ">
-                    <div className="table-title">
-                        <div className="row">
-                            <div className="col-sm-8">
-                                <h2>All <b>Teams</b></h2>
-                            </div>
-                            <div className="col-sm-4">
-                                <button className="text-dark bg-warning p-2 rounded-md min-w-[140px]" onClick={openCreateModal}>
-                                    Add New Team
-                                </button>
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <table className="table table-striped table-hover table-bordered ">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Logo</th>
-                                <th>Name</th>
-                                <th>Address</th>
-                                <th>City</th>
-                                <th>Join Code</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {teams.length > 0 ? (
-                                teams.map((team, index) => (
-                                    <tr key={team.id}>
-                                        <td>{index + 1}</td>
-                                        <td>
-                                            <img
-                                                src={team.logo ? `https://matc.matchdada.com/storage/app/public/${team.logo}` : "https://via.placeholder.com/50"}
-                                                alt="Team Logo"
-                                                style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-                                            />
-                                        </td>
-                                        <td>{team.name}</td>
-                                        <td>{team.address}</td>
-                                        <td>{team.city}</td>
-                                        <td>{team.pin}</td>
-                                        <td>
-                                            <Link to={`/team-members/${team.user_id}`} className="view users d-flex text-align-center justify-content-center" title="team-members">
-                                                <i className="fas fa-users me-2"></i>
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="7" className="text-center">No teams available</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+    <div className="table-wrapper">
+        <div className="table-title">
+            <div className="row">
+                <div className="col-sm-8">
+                    <h2>All <b>Teams</b></h2>
+                </div>
+                <div className="col-sm-4">
+                    <button className="text-dark bg-warning p-2 rounded-md min-w-[140px]" onClick={openCreateModal}>
+                        Add New Team
+                    </button>
                 </div>
             </div>
+        </div>
+
+        {/* 🔹 لوڈنگ کے دوران صرف لوڈر دکھائیں */}
+        {loading || teams.length === 0 ? (
+            <div className="text-center p-4">
+                <div className="spinner-border text-primary" role="status"></div>
+                <p>Loading teams...</p>
+            </div>
+        ) : (
+            <table className="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Logo</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>Join Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {teams.map((team, index) => (
+                        <tr key={team.id} onClick={() => navigate(`/team-members/${team.user_id}`)} style={{ cursor: "pointer" }}>
+                            <td>{index + 1}</td>
+                            <td>
+                                <img
+                                    src={team.logo ? `https://matc.matchdada.com/storage/app/public/${team.logo}` : "https://via.placeholder.com/50"}
+                                    alt="Team Logo"
+                                    style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                                />
+                            </td>
+                            <td>{team.name}</td>
+                            <td>{team.address}</td>
+                            <td>{team.city}</td>
+                            <td>{team.pin}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        )}
+    </div>
+</div>
+
 
             {/* Single Modal for Create and Edit */}
             <div className="modal fade" id="teamModal" tabIndex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
